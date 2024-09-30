@@ -1,49 +1,49 @@
 from abc import ABC, abstractmethod
 
-class Vehicle(ABC):
+# ۱. تعریف کلاس پایه برای دستگاه تهویه
+
+class ClimateControlSystem(ABC):
+
     @abstractmethod
-    def drive(self):
+
+    def control(self):
+
         pass
 
-class Car(Vehicle):
-    def drive(self):
-        return "Driving a car"
+# ۲. کلاس‌های مختلف برای هر نوع دستگاه
+class Cooler(ClimateControlSystem):
+    def control(self):
+        return "Cooling the house"
 
-class Motorcycle(Vehicle):
-    def drive(self):
-        return "Riding a motorcycle"
+class Heater(ClimateControlSystem):
+    def control(self):
+        return "Heating the house"
 
-class Bicycle(Vehicle):
-    def drive(self):
-        return "Riding a bicycle"
+class Dehumidifier(ClimateControlSystem):
+    def control(self):
+        return "Dehumidifying the air"
 
-class VehicleFactory(ABC):
-    @abstractmethod
-    def create_vehicle(self) -> Vehicle:
-        pass
+# ۳. کلاس‌های کارخانه‌ای برای هر نوع دستگاه
+class CoolerFactory:
+    def create_device(self) -> ClimateControlSystem:
+        return Cooler()
 
-class CarFactory(VehicleFactory):
-    def create_vehicle(self) -> Vehicle:
-        return Car()
+class HeaterFactory:
+    def create_device(self) -> ClimateControlSystem:
+        return Heater()
 
-class MotorcycleFactory(VehicleFactory):
-    def create_vehicle(self) -> Vehicle:
-        return Motorcycle()
+class DehumidifierFactory:
+    def create_device(self) -> ClimateControlSystem:
+        return Dehumidifier()
 
-class BicycleFactory(VehicleFactory):
-    def create_vehicle(self) -> Vehicle:
-        return Bicycle()
-
-def get_factory(vehicle_type):
-    if vehicle_type == "car":
-        return CarFactory()
-    elif vehicle_type == "motorcycle":
-        return MotorcycleFactory()
-    elif vehicle_type == "bicycle":
-        return BicycleFactory()
+# ۴. تابعی برای انتخاب کارخانه مناسب بر اساس شرایط
+def get_climate_control_factory(temperature, humidity):
+    if temperature > 24:
+        return CoolerFactory()
+    elif temperature < 24:
+        return HeaterFactory()
+    elif humidity > 50:
+        return DehumidifierFactory()
 
 if __name__ == "__main__":
-    vehicle_type = "car"
-    factory = get_factory(vehicle_type)
-    vehicle = factory.create_vehicle()
-    print(vehicle.drive())
+    print(get_climate_control_factory(22,30))

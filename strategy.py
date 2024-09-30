@@ -1,5 +1,7 @@
 # Strategy Interface
-class DiscountStrategy:
+from abc import ABC,abstractmethod
+class DiscountStrategy(ABC):
+    @abstractmethod
     def apply_discount(self, amount):
         pass
 
@@ -23,6 +25,7 @@ class ShoppingCart:
 
     def calculate_total(self, amount):
         return self.discount_strategy.apply_discount(amount)
+    
 if __name__=="__main__":
     # استفاده از استراتژی‌های مختلف
     cart = ShoppingCart(ChristmasDiscount())
